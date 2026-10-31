@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b20">
+<title>A Small Universe for Deena ✨</title>
+<style>
+  :root { --ink:#f4f4ff; --muted:#b9c1e8; --pink:#ffb6df; --blue:#9fe8ff; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; width:100%; min-height:100%; background:#050817; color:var(--ink); font-family:ui-rounded,"Segoe UI",system-ui,sans-serif; }
+  body { overflow:hidden; }
+  #sky { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .nebula { position:fixed; inset:-20%; pointer-events:none; background:
+    radial-gradient(ellipse at 18% 28%, rgba(88,65,180,.23), transparent 35%),
+    radial-gradient(ellipse at 82% 62%, rgba(20,133,176,.18), transparent 34%),
+    radial-gradient(ellipse at 52% 95%, rgba(187,64,147,.13), transparent 35%);
+    filter:blur(18px); animation:nebula 18s ease-in-out infinite alternate; }
+  @keyframes nebula { from { transform:translate(-2%,1%) scale(1); } to { transform:translate(2%,-2%) scale(1.08); } }
+  .vignette { position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, transparent 25%, rgba(2,4,15,.55) 100%); }
+  main { position:relative; z-index:2; min-height:100svh; display:grid; place-items:center; padding:22px; }
+  .card { width:min(680px,100%); text-align:center; padding:clamp(25px,6vw,54px) clamp(18px,5vw,44px); border:1px solid rgba(201,216,255,.18);
+    border-radius:28px; background:linear-gradient(145deg,rgba(16,23,57,.76),rgba(8,13,35,.52)); backdrop-filter:blur(15px);
+    box-shadow:0 20px 90px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07); animation:appear 1.2s ease both; }
+  @keyframes appear { from { opacity:0; transform:translateY(15px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+  .eyebrow { text-transform:uppercase; letter-spacing:.22em; color:var(--blue); font-size:.72rem; font-weight:700; }
+  h1 { margin:15px 0 16px; font-size:clamp(2.2rem,8vw,4.3rem); line-height:1.04; letter-spacing:-.045em; background:linear-gradient(100deg,#fff 12%,#b8eaff 45%,#ffc4e6 82%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  p { color:var(--muted); line-height:1.75; font-size:clamp(.98rem,2.7vw,1.1rem); margin:0 auto 22px; max-width:520px; }
+  .message { min-height:90px; display:grid; place-items:center; margin:15px 0 22px; }
+  .typed { color:#fff; font-size:clamp(1.05rem,3.4vw,1.35rem); line-height:1.65; max-width:520px; }
+  .cursor { display:inline-block; width:2px; height:1.1em; vertical-align:-.15em; margin-left:3px; background:var(--pink); animation:blink .8s steps(2,start) infinite; }
+  @keyframes blink { to { visibility:hidden; } }
+  .actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+  button { appearance:none; border:0; border-radius:999px; padding:13px 21px; font:700 .96rem inherit; font-size:.96rem; font-weight:700; cursor:pointer; transition:transform .2s, box-shadow .2s, background .2s; }
+  button:hover { transform:translateY(-2px); }
+  button:focus-visible { outline:3px solid white; outline-offset:4px; }
+  .primary { color:#10152f; background:linear-gradient(100deg,#b8f1ff,#ffc5e7); box-shadow:0 8px 28px rgba(139,210,255,.18); }
+  .secondary { color:#e8ecff; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); }
+  .hint { font-size:.78rem; color:#858fbf; margin-top:23px; }
+  .plane { position:fixed; z-index:3; left:-15%; top:25%; font-size:clamp(2rem,7vw,3.5rem); opacity:0; filter:drop-shadow(0 0 14px rgba(178,233,255,.7)); pointer-events:none; }
+  .plane.fly { animation:fly 5s cubic-bezier(.3,.1,.2,1) forwards; }
+  @keyframes fly { 0%{left:-15%;top:76%;opacity:0;transform:rotate(-25deg) scale(.7)} 12%{opacity:1} 48%{top:22%;transform:rotate(-8deg) scale(1)} 100%{left:110%;top:42%;opacity:0;transform:rotate(15deg) scale(.8)} }
+  .cat { position:fixed; z-index:4; left:-150px; bottom:7%; font-size:clamp(3rem,12vw,5.5rem); filter:drop-shadow(0 0 20px rgba(255,190,224,.25)); transition:left 1.4s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
+  .cat.show { left:calc(50% - 42px); }
+  .toast { position:fixed; z-index:5; bottom:20px; left:50%; transform:translate(-50%,20px); opacity:0; max-width:calc(100% - 30px); padding:12px 17px; text-align:center; border-radius:16px; background:rgba(15,22,52,.93); border:1px solid rgba(255,255,255,.15); color:#fff; transition:all .35s; box-shadow:0 10px 35px #0005; font-size:.9rem; }
+  .toast.show { opacity:1; transform:translate(-50%,0); }
+  .wish-star { position:fixed; z-index:1; pointer-events:none; font-size:22px; animation:wish 2.4s ease-out forwards; filter:drop-shadow(0 0 12px #9fe8ff); }
+  @keyframes wish { 0%{opacity:0;transform:translate(0,0) scale(.3)} 15%{opacity:1} 100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4)} }
+  .footer { position:fixed; bottom:10px; left:0; width:100%; text-align:center; z-index:2; color:rgba(196,205,245,.45); font-size:.68rem; letter-spacing:.04em; pointer-events:none; }
+  @media (max-height:650px) { .card{padding:22px 20px} .message{min-height:65px;margin:8px 0 12px} p{margin-bottom:12px} .hint{margin-top:12px} }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important} }
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div><div class="vignette" aria-hidden="true"></div>
+<div class="plane" id="plane" aria-hidden="true">✈️</div>
+<div class="cat" id="cat" aria-hidden="true">🐈</div>
+<main>
+  <section class="card" aria-live="polite">
+    <div class="eyebrow">a tiny corner of the internet</div>
+    <h1 id="title">A Small Universe</h1>
+    <p id="intro">For Deena — because apparently, a normal message wasn't unnecessarily complicated enough.</p>
+    <div class="message"><div class="typed" id="typed">Ready for a little cosmic nonsense?</div></div>
+    <div class="actions">
+      <button class="primary" id="start">Open your universe ✨</button>
+      <button class="secondary" id="starBtn" hidden>Make a wish ⭐</button>
+    </div>
+    <div class="hint" id="hint">P.S. You can tap anywhere in the sky to make a star.</div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<div class="footer">MADE OF STARDUST, HTML & QUESTIONABLE AMOUNTS OF EFFORT</div>
+<script>
+(() => {
+  const canvas = document.getElementById('sky'), ctx = canvas.getContext('2d');
+  let w, h, dpr, stars = [], shooting = [], started = false, toastTimer;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2); w = innerWidth; h = innerHeight;
+    canvas.width = w*dpr; canvas.height = h*dpr; canvas.style.width=w+'px'; canvas.style.height=h+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);
+    stars = Array.from({length:Math.min(180, Math.floor(w*h/6500))}, () => ({
+      x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.4+.25,
+      a:Math.random()*.65+.2, phase:Math.random()*6.28, speed:Math.random()*.012+.003
+    }));
+  }
+  function frame(t) {
+    ctx.clearRect(0,0,w,h);
+    for (const s of stars) {
+      const twinkle = reduced ? 1 : .65 + Math.sin(t*s.speed/10+s.phase)*.35;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(220,235,255,${s.a*twinkle})`; ctx.fill();
+    }
+    shooting = shooting.filter(s => s.life > 0);
+    for (const s of shooting) {
+      ctx.strokeStyle=`rgba(178,231,255,${s.life})`; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x-s.len,s.y-s.len*.42); ctx.stroke();
+      s.x+=s.vx; s.y+=s.vy; s.life-=.012;
+    }
+    if (!reduced && Math.random()<.008) shooting.push({x:Math.random()*w*.8+w*.1,y:Math.random()*h*.45,len:65,vx:4,vy:1.8,life:1});
+    requestAnimationFrame(frame);
+  }
+  resize(); addEventListener('resize',resize); requestAnimationFrame(frame);
+  const $ = id => document.getElementById(id);
+  function sayToast(text) {
+    $('toast').textContent=text; $('toast').classList.add('show'); clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2800);
+  }
+  function typeText(text, speed=34) {
+    const el=$('typed'); el.textContent=''; let i=0;
+    const cursor=document.createElement('span'); cursor.className='cursor'; cursor.setAttribute('aria-hidden','true'); el.appendChild(cursor);
+    function step() {
+      if(i<text.length) { cursor.insertAdjacentText('beforebegin',text[i++]); setTimeout(step,reduced?0:speed); }
+      else cursor.remove();
+    } step();
+  }
+  function burst(x,y) {
+    const star=document.createElement('span'); star.className='wish-star'; star.textContent=['✦','✧','✨','★'][Math.floor(Math.random()*4)];
+    star.style.left=x+'px'; star.style.top=y+'px'; star.style.setProperty('--dx',(Math.random()*140-70)+'px'); star.style.setProperty('--dy',(-70-Math.random()*110)+'px');
+    document.body.appendChild(star); setTimeout(()=>star.remove(),2500);
+  }
+  document.addEventListener('pointerdown', e => {
+    if(e.target.closest('button')) return;
+    burst(e.clientX,e.clientY);
+  });
+  $('start').addEventListener('click', () => {
+    if(started) return; started=true;
+    $('title').textContent='Hello, Deena ✨';
+    $('intro').textContent='The universe is enormous. This webpage, however, is a very small one made just for you.';
+    $('start').hidden=true; $('starBtn').hidden=false;
+    $('hint').textContent='Tap the sky to make little stars appear.';
+    typeText('Somewhere in all this cosmic chaos, unexpected little stories happen. That is a pretty lovely thing.',30);
+    $('plane').classList.add('fly');
+    setTimeout(() => {
+      $('cat').classList.add('show');
+      sayToast("Official cat review: the human has put an unreasonable amount of effort into this. 🐾");
+    }, 2400);
+    setTimeout(() => {
+      $('cat').classList.remove('show');
+      typeText("Anyway, I made you a tiny universe. Feel free to cause a little chaos in it. — Vidhun",32);
+    }, 5700);
+    setTimeout(() => {
+      $('title').textContent='DEENA';
+      sayToast('Name successfully added to the universe. No further paperwork required. ⭐');
+    }, 9500);
+  });
+  $('starBtn').addEventListener('click', () => {
+    for(let i=0;i<18;i++) setTimeout(()=>burst(Math.random()*w,Math.random()*h),i*45);
+    const wishes=[
+      'Wish for something lovely. The universe is listening. (Probably.)',
+      'May your next few days contain excellent surprises and terrible jokes.',
+      'A tiny wish for a very real smile. ⭐',
+      'You have officially made this corner of the internet brighter.'
+    ];
+    sayToast(wishes[Math.floor(Math.random()*wishes.length)]);
+  });
+})();
+</script>
+</body>
+</html>
